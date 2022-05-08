@@ -3,10 +3,10 @@
     namespace App\Db;
 
     use PDO;
-use PDOException;
+    use PDOException;
 
     class Database {
-
+ 
         //host de conexão
         const Host = 'localhost';
 
@@ -45,8 +45,52 @@ use PDOException;
                 die('Error: ' .$e->getMessage());
 
             }
-
-
         }
+
+        //metodos responsavel por executar as queries dentro do banco 
+        public function execute($query, $params = []) {
+            try{
+
+                $statement = $this->connection->prepare($query);
+                $statement->execute($params);
+                return $statement;
+
+            }catch(PDOException $e){
+
+                die('Error: ' .$e->getMessage());
+
+            }
+        }
+
+        //metodo responsável por inserir dados no banco.
+        public function insert($values){
+            //dados da query
+            $fields = array_keys($values);
+            $binds = array_pad([], count($fields), '?');
+
+            //montando a query
+            $query =  'INSERT INTO '.$this->table.' ('.implode(',',$fields).') VALUES ('.implode(',',$binds).')';
+
+            //executa o insert
+            $this->execute($query, array_values($values));
+
+            //retorna a ID
+            return $this->connection->lastInsertId();
+        }
+
+        //metodo responsavel por realizar a consulta no banco 
+        public function select ($where = null, $order = null, $limit = null, $fields='*'){
+
+            //dados da query
+            $where = strlen($where) ? 'WHERE '.$where : '';
+            $order = strlen($order) ? 'ORDER BY '.$order : '';
+            $limit = strlen($limit) ? 'LIMIT '.$limit : '';
+
+            //montando a query
+            $query = 'SELECT '.$fields.' FROM '.$this->table.' '.$where.' '.$order.' '.$limit;
+
+            return $this->execute($query);
+        }
+
     }
 ?>
