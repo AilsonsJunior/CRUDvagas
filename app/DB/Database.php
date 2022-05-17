@@ -92,5 +92,34 @@
             return $this->execute($query);
         }
 
+        //metodo responsavel por atulizar dados no banco de dados.
+        public function update($where, $values) {
+
+            //dados da querry
+            $fields = array_keys($values);
+
+            //montando a query
+            $query = 'UPDATE '.$this->table.' SET '.implode('=?,',$fields).'=? WHERE '.$where;
+
+            //executa a query
+            $this->execute($query,array_values($values));
+
+            return true;
+        }
+
+        //metodo responsavel por excluir dados do banco.
+        public function delete ($where) {
+
+            //montando a query
+            $query = 'DELETE FROM '.$this->table.' WHERE '.$where;
+
+            //excuta a query
+            $this->execute($query);
+
+            //retorna sucesso
+            return true;
+
+        }
+
     }
 ?>

@@ -34,11 +34,28 @@ class Vaga{
                                         'titulo'     => $this->titulo, 
                                         'descricao'  => $this->descricao,
                                         'ativo'      => $this->ativo,
-                                        'data'       => $this->data,
+                                        'data'       => $this->data
                                         ]);                              
         
         //retornar sucesso
-        return true;                                
+        return true;           
+    }
+
+    //metodo responsavel por atualizar os dados do banco
+    public function atualizar() {
+        return (new Database('vagas'))->update('id =' .$this->id,[
+                                                                'titulo'     => $this->titulo, 
+                                                                'descricao'  => $this->descricao,
+                                                                'ativo'      => $this->ativo,
+                                                                'data'       => $this->data
+                                                                ]);
+
+    }
+
+    //metodo responsavel por excluir vagas
+    public function excluir () {
+        return (new Database('vagas'))->delete('id = '.$this->id);
+
     }
 
     //metodo responsavel por pegar as vagas registradas no banco 
@@ -47,6 +64,15 @@ class Vaga{
                                       ->fetchAll(PDO::FETCH_CLASS, self::class); 
     }
 
+    //metodo responsavel por buscar vagas por ID
+    public static function getVaga($id) {
+
+        return (new Database('vagas'))->select('id = ' .$id)
+                                      ->fetchObject(self::class);
+    
+    }
+
 }
+
 
 ?>

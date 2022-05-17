@@ -6,17 +6,17 @@
         </a>
     </section>
 
-    <h2 class="mt-3">Cadastrar Vaga </h2>
+    <h2 class="mt-3"><?=TITLE?></h2>
 
     <form method="post" class="mt-3">
         <div class="form-group">
             <label>Título</label>
-            <input type="text" class="form-control" name="titulo">
+            <input type="text" class="form-control" name="titulo" value="<?=$obVaga->titulo?>">
         </div>
 
         <div class="form-group">
             <label>Descrição</label>
-            <textarea class="form-control" name="descricao"></textarea>
+            <textarea class="form-control" name="descricao"><?=$obVaga->descricao?></textarea>
         </div>
 
         <div class="form-group">
@@ -31,7 +31,7 @@
                  
                 <div class="form-check form-check-inline">
                     <label class="form-control">
-                        <input type="radio" name="inativo" value="n">Inativo
+                        <input type="radio" name="inativo" value="n" <?=$obVaga->ativo == 'n' ? 'checked' : ''?>>Inativo
                     </label>
                 </div>
 
